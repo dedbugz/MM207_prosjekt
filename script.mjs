@@ -44,6 +44,22 @@ function getQuote(req, res, next) {
 server.get("/tmp/quote", getQuote);
 
 
+// Funksjon for å summere to tall
+function calculateSum(req, res, next) {
+    const a = parseFloat(req.params.a); // Hent første tall fra URL-parametere
+    const b = parseFloat(req.params.b); // Hent andre tall fra URL-parametere
+  
+    if (isNaN(a) || isNaN(b)) {
+      // Hvis en parameter ikke er et tall, returner feilmelding
+      return res.status(400).send('Bad Request: Both parameters must be numbers.');
+    }
+  
+    const sum = a + b;
+    res.send(`The sum of ${a} and ${b} is ${sum}.`).end();
+  }
+  server.get('/tmp/sum/:a/:b', calculateSum);
+
+
 // Starter serveren
 server.listen(server.get('port'), function () {
     console.log('server running', server.get('port'));
