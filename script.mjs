@@ -5,8 +5,7 @@ const server = express();
 const port = (process.env.PORT || 8000);
 
 server.set('port', port);
-server.use(express.static('public'));
-
+server.use(express.static('public')); //kobler alt som ligger i public mappe ut i verden
 
 function getRoot(req, res, next) {
     res.status(HTTP_CODES.SUCCESS.OK).send('Hello World').end();
