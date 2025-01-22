@@ -7,6 +7,90 @@ const port = (process.env.PORT || 8000);
 server.set('port', port);
 server.use(express.static('public')); //kobler alt som ligger i public mappe ut i verden
 
+const decks = {};
+
+//________Kortstokk_______________________________________________________
+
+function createDeck() {
+  const suits = ['hearts', 'diamonds', 'clubs', 'spades'];
+  const values = ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A'];
+  const deck = [];
+
+  for (const suit of suits) {
+    for (const value of values) {
+      deck.push({ suit, value });
+    }
+  }
+
+  return deck;
+}
+
+server.post('/temp/deck', (req, res) => {
+  const deck = createDeck();
+  const deckId = Math.random().toString(36).substring(2, 10);
+  decks[deckId] = deck;
+
+  res.status(HTTP_CODES.SUCCESS.CREATED).send({deck_id: deckID}).end(); 
+});
+
+
+server.patch('/temp/deck/shuffle/:deck_id', (req, res) => {
+  const { deck_id } = req.params;
+    console.log('Decks object:', decks);
+    console.log('Deck ID received:', deck_id);
+  const deck = decks[deck_id];
+
+  if (!deck) {
+    return res.status(HTTP_CODES.CLIENT_ERROR.NOT_FOUND).send({ error: 'Deck not found' }).end();
+  }
+
+  // Shuffle logic, Fisher-Yates algoritmen
+  for (let i = deck.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [deck[i], deck[j]] = [deck[j], deck[i]];
+  }
+
+  res.status(HTTP_CODES.SUCCESS.OK).send({ message: 'Deck is shuffled', deck }).end();
+});
+
+
+
+server.get('/temp/deck/:deck_id', (req, res) => {
+  const { deck_id } = req.params;
+  const deck = decks[deck_id];
+
+  if (!deck) {
+    return res.status(HTTP_CODES.CLIENT_ERROR.NOT_FOUND).send({error: 'Deck not found'}).end();
+  }
+
+  res.status(200).send(decks[deck_id]);
+});
+
+
+
+server.get('/temp/deck/:deck_id/card', (req, res) => {
+  const { deck_id } = req.params;
+  const deck = decks[deck_id];
+
+  if (!deck) {
+    return res.status(HTTP_CODES.CLIENT_ERROR.NOT_FOUND).send({ error: 'Deck not found' }).end();
+  }
+  if (deck.length === 0) {
+    return res.status(HTTP_CODES.CLIENT_ERROR.BAD_REQUEST).send({ error: 'No cards left in the deck' }).end();
+  }
+
+  const cardIndex = Math.floor(Math.random() * deck.length);
+  const card = deck.splice(cardIndex, 1)[0];
+    
+    console.log('Card Drawn:', card); // Log the card drawn
+
+  res.status(HTTP_CODES.SUCCESS.OK).send({card});
+});
+
+
+
+//________Oppstart_______________________________________________________
+
 function getRoot(req, res, next) {
     res.status(HTTP_CODES.SUCCESS.OK).send('Hello World').end();
 }
@@ -52,6 +136,7 @@ server.get("/", getRoot);
 server.get("/tmp/poem", getPoem);
 server.get("/tmp/quote", getQuote);
 server.post('/tmp/sum/:a/:b', getSum);
+
 
 server.listen(server.get('port'), function () {
     console.log('server running', server.get('port'));
