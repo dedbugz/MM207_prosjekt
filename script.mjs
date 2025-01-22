@@ -30,21 +30,21 @@ server.post('/temp/deck', (req, res) => {
   const deckId = Math.random().toString(36).substring(2, 10);
   decks[deckId] = deck;
 
-  res.status(HTTP_CODES.SUCCESS.CREATED).send({deck_id: deckID}).end(); 
+  res.status(HTTP_CODES.SUCCESS.CREATED).send({deck_id: deckId}).end(); 
 });
+
 
 
 server.patch('/temp/deck/shuffle/:deck_id', (req, res) => {
   const { deck_id } = req.params;
-    console.log('Decks object:', decks);
-    console.log('Deck ID received:', deck_id);
-  const deck = decks[deck_id];
+    console.log('Deck ID Received:', deck_id);
 
+  const deck = decks[deck_id];
   if (!deck) {
     return res.status(HTTP_CODES.CLIENT_ERROR.NOT_FOUND).send({ error: 'Deck not found' }).end();
   }
 
-  // Shuffle logic, Fisher-Yates algoritmen
+  //shuffle logikk
   for (let i = deck.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
     [deck[i], deck[j]] = [deck[j], deck[i]];
@@ -56,33 +56,35 @@ server.patch('/temp/deck/shuffle/:deck_id', (req, res) => {
 
 
 server.get('/temp/deck/:deck_id', (req, res) => {
-  const { deck_id } = req.params;
+  const {deck_id} = req.params;
   const deck = decks[deck_id];
 
+    console.log('Got Deck:', deck_id);
   if (!deck) {
-    return res.status(HTTP_CODES.CLIENT_ERROR.NOT_FOUND).send({error: 'Deck not found'}).end();
+      return res.status(HTTP_CODES.CLIENT_ERROR.NOT_FOUND).send({error: 'Deck is not found' });
   }
 
-  res.status(200).send(decks[deck_id]);
+  res.status(HTTP_CODES.SUCCESS.OK).send({deck});
 });
 
 
 
 server.get('/temp/deck/:deck_id/card', (req, res) => {
-  const { deck_id } = req.params;
+  const {deck_id} = req.params;
   const deck = decks[deck_id];
 
+    console.log('Drew Card from Deck:', deck_id); 
+
   if (!deck) {
-    return res.status(HTTP_CODES.CLIENT_ERROR.NOT_FOUND).send({ error: 'Deck not found' }).end();
+      return res.status(HTTP_CODES.CLIENT_ERROR.NOT_FOUND).send({ error: 'Deck was not found' });
   }
   if (deck.length === 0) {
-    return res.status(HTTP_CODES.CLIENT_ERROR.BAD_REQUEST).send({ error: 'No cards left in the deck' }).end();
+      return res.status(HTTP_CODES.CLIENT_ERROR.BAD_REQUEST).send({ error: 'No cards left in the deck' });
   }
 
   const cardIndex = Math.floor(Math.random() * deck.length);
   const card = deck.splice(cardIndex, 1)[0];
-    
-    console.log('Card Drawn:', card); // Log the card drawn
+    console.log('Card Drawn:', card);
 
   res.status(HTTP_CODES.SUCCESS.OK).send({card});
 });
