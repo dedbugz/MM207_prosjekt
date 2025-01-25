@@ -1,9 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
-
     const createDeckButton = document.getElementById('create-deck');
     const shuffleDeckButton = document.getElementById('shuffle-deck');
     const drawCardButton = document.getElementById('draw-card');
-    const deckIdDisplay = document.getElementById('deck-id');
     const cardResult = document.getElementById('card-result');
 
     let deckId = null;
@@ -33,14 +31,24 @@ document.addEventListener('DOMContentLoaded', () => {
     const cardValue = document.getElementById('card-value');
 
     drawCardButton.addEventListener('click', async () => {
+        if (!deckId) return;
+    
         try {
-            const response = await fetch(`/temp/deck/${deckId}/card`, { method: 'GET' });
-            if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+            const response = await fetch(`/temp/deck/${deckId}/card`);
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
             const data = await response.json();
-            cardSuit.textContent = `Suit: ${data.card.suit}`;
-            cardValue.textContent = `Value: ${data.card.value}`;
+            const { suit, value } = data.card;
+    
+            // Bygg filsti for bildet
+            const cardImagePath = `imgs/cards/${suit}_${value}.png`;
+    
+            // Vis bildet
+            cardResult.innerHTML = `<img src="${cardImagePath}" alt="${value} of ${suit}" />`;
         } catch (error) {
-            console.error(error);
+            console.error('Error drawing card:', error);
         }
     });
+    
 });

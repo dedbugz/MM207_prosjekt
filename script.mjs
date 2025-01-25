@@ -70,23 +70,22 @@ server.get('/temp/deck/:deck_id', (req, res) => {
 
 
 server.get('/temp/deck/:deck_id/card', (req, res) => {
-  const {deck_id} = req.params;
+  const { deck_id } = req.params;
   const deck = decks[deck_id];
 
-    console.log('Drew Card from Deck:', deck_id); 
-
   if (!deck) {
-      return res.status(HTTP_CODES.CLIENT_ERROR.NOT_FOUND).send({ error: 'Deck was not found' });
+      return res.status(HTTP_CODES.CLIENT_ERROR.NOT_FOUND).send({ error: 'Deck not found' }).end();
   }
   if (deck.length === 0) {
-      return res.status(HTTP_CODES.CLIENT_ERROR.BAD_REQUEST).send({ error: 'No cards left in the deck' });
+      return res.status(HTTP_CODES.CLIENT_ERROR.BAD_REQUEST).send({ error: 'No cards left in the deck' }).end();
   }
 
   const cardIndex = Math.floor(Math.random() * deck.length);
   const card = deck.splice(cardIndex, 1)[0];
-    console.log('Card Drawn:', card);
 
-  res.status(HTTP_CODES.SUCCESS.OK).send({card});
+  console.log('Card Drawn:', card);
+
+  res.status(HTTP_CODES.SUCCESS.OK).send({ card });
 });
 
 
