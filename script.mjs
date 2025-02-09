@@ -1,29 +1,49 @@
 import express from 'express'
 import session from 'express-session';
+import FileStore from 'session-file-store';
+import fs from 'fs';
 import HTTP_CODES from './utils/httpCodes.mjs';
 import log from './modules/log.mjs';
 import { LOGG_LEVELS, eventLogger } from './modules/log.mjs';
 
 const ENABLE_LOGGING = false;
-
 const server = express();
-const port = (process.env.PORT || 8000);
+const port = process.env.PORT || 8000;
 
 const logger = log(LOGG_LEVELS.VERBOSE);
-
 server.set('port', port);
 server.use(logger);
 server.use(express.static('public')); //kobler alt som ligger i public mappe ut i verden
 
+//________Session storage_______________________________________________________
+
+const FileStoreSession = FileStore(session);
+const sessionDir = './sessions';
+if (!fs.existsSync(sessionDir)) {
+  fs.mkdirSync(sessionDir);
+}
+
 server.use(session({
-  secret: 'hemmeligNøkkel', // Endre dette til noe sikkert i produksjon
+  store: new FileStoreSession({ path: sessionDir }),
+  secret: 'hemmeligNøkkel',
   resave: false,
-  saveUninitialized: true
+  saveUninitialized: true,
+  cookie: { maxAge: 1000 * 60 * 60 * 24 }
 }));
 
-const decks = {};
+server.get('/session', (req, res) => {
+  if (!req.session.visits) {
+      req.session.visits = 1;
+  } else {
+      req.session.visits++;
+  }
+  res.send(`Antall besøk: ${req.session.visits}`);
+});
+
 
 //________Kortstokk_______________________________________________________
+
+const decks = {};
 
 function createDeck() {
   const suits = ['hearts', 'diamonds', 'clubs', 'spades'];
@@ -152,14 +172,6 @@ server.get("/tmp/poem", getPoem);
 server.get("/tmp/quote", getQuote);
 server.post('/tmp/sum/:a/:b', getSum);
 
-server.get('/session', (req, res) => {
-  if (!req.session.visits) {
-      req.session.visits = 1;
-  } else {
-      req.session.visits++;
-  }
-  res.send(`Antall besøk: ${req.session.visits}`);
-});
 
 server.listen(server.get('port'), function () {
     console.log('server running', server.get('port'));
