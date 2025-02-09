@@ -16,10 +16,9 @@ server.use(logger);
 server.use(express.static('public')); //kobler alt som ligger i public mappe ut i verden
 
 server.use(session({
-  secret: 'hemmeligNøkkel',  // Endre dette til en sikker nøkkel
-  resave: false,             // Hindrer at sesjoner lagres om de ikke endres
-  saveUninitialized: true,   // Lagrer nye sesjoner selv om de ikke er brukt enda
-  cookie: { secure: false }  // Sett til true hvis du bruker HTTPS
+  secret: 'hemmeligNøkkel', // Endre dette til noe sikkert i produksjon
+  resave: false,
+  saveUninitialized: true
 }));
 
 const decks = {};
@@ -104,15 +103,6 @@ server.get('/temp/deck/:deck_id/card', (req, res) => {
 });
 
 
-server.get('/session-test', (req, res) => {
-  if (!req.session.views) {
-      req.session.views = 1;
-  } else {
-      req.session.views++;
-  }
-  res.send(`Du har besøkt denne siden ${req.session.views} ganger.`);
-});
-
 //________Oppstart_______________________________________________________
 
 function getRoot(req, res, next) {
@@ -162,6 +152,14 @@ server.get("/tmp/poem", getPoem);
 server.get("/tmp/quote", getQuote);
 server.post('/tmp/sum/:a/:b', getSum);
 
+server.get('/session', (req, res) => {
+  if (!req.session.visits) {
+      req.session.visits = 1;
+  } else {
+      req.session.visits++;
+  }
+  res.send(`Antall besøk: ${req.session.visits}`);
+});
 
 server.listen(server.get('port'), function () {
     console.log('server running', server.get('port'));
