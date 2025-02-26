@@ -18,12 +18,5 @@
       "sizes": "512x512",
       "type": "image/png"
     }
-  ],
-  "screenshots": [
-    {
-      "src": "/imgs/pwa/screenshot1.png",
-      "sizes": "1080x1920",
-      "type": "image/png"
-    }
   ]
 }
