@@ -30,6 +30,7 @@ server.get("/", (req, res) => {
     res.sendFile(path.join(__dirname, "public/html/oppskriftsapp.html"));
 });
 
+
 //________Kortstokk_______________________________________________________
 
 const decks = {};
