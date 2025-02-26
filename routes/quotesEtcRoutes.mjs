@@ -4,11 +4,6 @@ import { eventLogger } from '../modules/log.mjs';
 
 const router = express.Router();
 
-router.get("/", (req, res) => {
-    eventLogger("Noen spurte etter root");
-    res.status(HTTP_CODES.SUCCESS.OK).send('Hello World').end();
-});
-
 router.get("/tmp/poem", (req, res) => {
     const poem = `
       Roser er røde

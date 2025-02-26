@@ -16,6 +16,20 @@ server.set('port', port);
 server.use(logger);
 server.use(express.static('public'));
 
+//________Matapp_______________________________________________________
+
+import path from "path";
+import { fileURLToPath } from "url";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+//oppskrifts-appen på root ("/")
+server.get("/", (req, res) => {
+    console.log("Root ble spurt etter - sender oppskriftsapp.html");
+    res.sendFile(path.join(__dirname, "public/html/oppskriftsapp.html"));
+});
+
 //________Kortstokk_______________________________________________________
 
 const decks = {};
@@ -88,6 +102,7 @@ server.get('/temp/deck/:deck_id/card', (req, res) => {
 
   res.status(HTTP_CODES.SUCCESS.OK).send({ card });
 });
+
 
 //________Bruk av eksterne routes_______________________________________________________
 server.use('/', sessionRoutes);
