@@ -29,6 +29,9 @@ server.get("/", (req, res) => {
     console.log("Root ble spurt etter - sender oppskriftsapp.html");
     res.sendFile(path.join(__dirname, "public/html/oppskriftsapp.html"));
 });
+server.get("/service-worker.js", (req, res) => {
+  res.sendFile(path.join(__dirname, "public/js/service-worker.js"));
+});
 
 
 //________Kortstokk_______________________________________________________
