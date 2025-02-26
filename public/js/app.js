@@ -1,6 +1,6 @@
 
 if ("serviceWorker" in navigator) {
-    navigator.serviceWorker.register("/service-worker.js")
-        .then(() => console.log("Service Worker registrert"))
-        .catch(err => console.error("Service Worker feilet:", err));
+    navigator.serviceWorker.register("/js/service-worker.js")
+    .then((reg) => {console.log("Service Worker registrert!", reg);})
+    .catch((err) => {console.log("Service Worker-feil:", err);});
 }

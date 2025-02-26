@@ -1,10 +1,11 @@
 
 {
-    "name": "Oppskrifts-API",
+    "name": "Oppskriftsapp",
     "short_name": "Oppskrifter",
+    "description": "En PWA for oppskrifter",
     "start_url": "/",
     "display": "standalone",
     "background_color": "#ffffff",
-    "theme_color": "#ff9800",
+    "theme_color": "#4CAF50",
     "icons": []
   }

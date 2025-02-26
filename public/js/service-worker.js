@@ -1,23 +1,21 @@
 
-const CACHE_NAME = "recipe-pwa-v1";
-const urlsToCache = [
-    "/",
-    "/css/styles.css",
-    "/js/app.js",
-    "/manifest.json"
-];
-
-self.addEventListener("install", event => {
+self.addEventListener("install", (event) => {
+    console.log("Service Worker installert");
     event.waitUntil(
-        caches.open(CACHE_NAME).then(cache => {
-            return cache.addAll(urlsToCache);
+        caches.open("oppskriftsapp-cache").then((cache) => {
+            return cache.addAll([
+                "/",
+                "/html/oppskriftsapp.html",
+                "/css/styles.css",
+                "/js/app.js"
+            ]);
         })
     );
 });
 
-self.addEventListener("fetch", event => {
+self.addEventListener("fetch", (event) => {
     event.respondWith(
-        caches.match(event.request).then(response => {
+        caches.match(event.request).then((response) => {
             return response || fetch(event.request);
         })
     );
