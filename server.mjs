@@ -1,5 +1,6 @@
 import express from 'express';
 import HTTP_CODES from './utils/httpCodes.mjs';
+import pool from './utils/db.js';
 import log from './modules/log.mjs';
 import { LOGG_LEVELS } from './modules/log.mjs';
 
@@ -15,6 +16,17 @@ const logger = log(LOGG_LEVELS.VERBOSE);
 server.set('port', port);
 server.use(logger);
 server.use(express.static('public'));
+
+//________Teste databaseforbindelse____________________________________
+
+pool.query('SELECT NOW()', (err, res) => {
+  if (err) {
+    console.error('Database connection error:', err);
+  } else {
+    console.log('Database connected:', res.rows[0]);
+  }
+});
+
 
 //________Matapp_______________________________________________________
 
