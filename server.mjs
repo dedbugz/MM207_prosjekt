@@ -3,6 +3,7 @@ import HTTP_CODES from './utils/httpCodes.mjs';
 import pool from './utils/db.js';
 import log from './modules/log.mjs';
 import { LOGG_LEVELS } from './modules/log.mjs';
+import dotenv from "dotenv";
 
 // Importer routes for session og oppstartsfunksjoner
 import sessionRoutes from './routes/sessionRoutes.mjs';
@@ -18,6 +19,9 @@ server.use(logger);
 server.use(express.static('public'));
 
 //________Teste databaseforbindelse____________________________________
+
+dotenv.config();
+
 
 pool.query('SELECT NOW()', (err, res) => {
   if (err) {
