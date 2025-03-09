@@ -11,7 +11,6 @@ self.addEventListener("install", (event) => {
     console.log("Service worker installert!");
     event.waitUntil(
         caches.open(CACHE_NAME).then((cache) => {
-            console.log("Caching app shell...");
             return cache.addAll(ASSETS_TO_CACHE);
         })
     );
@@ -20,13 +19,11 @@ self.addEventListener("install", (event) => {
 
 // Aktiver service worker og fjern gammel cache
 self.addEventListener("activate", (event) => {
-    console.log("Service worker aktivert!");
     event.waitUntil(
         caches.keys().then((cacheNames) => {
             return Promise.all(
                 cacheNames.map((cache) => {
                     if (cache !== CACHE_NAME) {
-                        console.log("Sletter gammel cache:", cache);
                         return caches.delete(cache);
                     }
                 })
