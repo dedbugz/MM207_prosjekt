@@ -52,10 +52,20 @@ recipeRouter.delete("/:id", async (req, res) => {
     const { id } = req.params;
     let data = JSON.parse(await fs.readFile(filePath, "utf-8"));
 
-    data = data.filter(r => r.id !== id);
-    await fs.writeFile(filePath, JSON.stringify(data, null, 2));
+    if (!Array.isArray(data.recipes)) {
+        return res.status(500).json({ error: "Invalid data format" });
+    }
+
+    const initialLength = data.recipes.length;
+    data.recipes = data.recipes.filter(r => r.id !== id.toString());
+    if (data.recipes.length === initialLength) {
+        return res.status(404).json({ error: "Recipe not found" });
+    }
+
+    await fs.writeFile(filePath, JSON.stringify({ recipes: data.recipes }, null, 2));
     res.status(204).end();
 });
+
 
 
 
