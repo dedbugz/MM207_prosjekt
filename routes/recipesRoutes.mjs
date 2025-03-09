@@ -15,18 +15,19 @@ recipeRouter.get('/', async (req, res) => {
 });
 
 // Legg til en ny oppskrift
-recipeRouter.put("/:id", async (req, res) => {
-    const { id } = req.params;
-    const updatedRecipe = req.body;
-    let data = JSON.parse(await fs.readFile(filePath, "utf-8"));
-   
-    const index = data.recipes.findIndex(r => r.id == id);
-    if (index === -1) return res.status(404).json({ error: "Recipe not found" });
+recipeRouter.post("/", async (req, res) => {
+    const data = JSON.parse(await fs.readFile(filePath, "utf-8"));
 
-    data.recipes[index] = { ...data.recipes[index], ...updatedRecipe, id: data.recipes[index].id };
+    if (!Array.isArray(data.recipes)) {
+        data.recipes = [];
+    }
 
+    const id = (data.recipes.length + 1).toString();
+    const newRecipe = { id, ...req.body };
+
+    data.recipes.push(newRecipe);
     await fs.writeFile(filePath, JSON.stringify(data, null, 2));
-    res.json(data.recipes[index]);
+    res.status(201).json(newRecipe);
 });
 
 
