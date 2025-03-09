@@ -9,6 +9,8 @@ import dotenv from "dotenv";
 import sessionRoutes from './routes/sessionRoutes.mjs';
 import quotesEtcRoutes from './routes/quotesEtcRoutes.mjs';
 
+import recipeRouter from './routes/recipesRoutes.mjs';
+
 const ENABLE_LOGGING = false;
 const server = express();
 const port = process.env.PORT || 8000;
@@ -17,6 +19,7 @@ const logger = log(LOGG_LEVELS.VERBOSE);
 server.set('port', port);
 server.use(logger);
 server.use(express.static('public'));
+server.use(express.json());
 
 //________Teste databaseforbindelse____________________________________
 
@@ -31,6 +34,7 @@ pool.query('SELECT NOW()', (err, res) => {
   }
 });
 
+server.use('/api/recipes', recipeRouter);
 
 //________Matapp_______________________________________________________
 

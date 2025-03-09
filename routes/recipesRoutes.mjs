@@ -5,9 +5,13 @@ const recipeRouter = express.Router();
 const filePath = "./data/recipes.json";
 
 // Hent alle oppskrifter
-recipeRouter.get("/", async (req, res) => {
-    const data = await fs.readFile(filePath, "utf-8");
-    res.json(JSON.parse(data));
+recipeRouter.get('/', async (req, res) => {
+    try {
+        const data = await fs.readFile(filePath, 'utf-8');
+        res.json(JSON.parse(data));
+    } catch (error) {
+        res.status(500).json({ error: 'Kunne ikke hente oppskrifter' });
+    }
 });
 
 // Legg til en ny oppskrift
