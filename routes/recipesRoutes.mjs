@@ -18,8 +18,14 @@ recipeRouter.get('/', async (req, res) => {
 recipeRouter.post("/", async (req, res) => {
     const newRecipe = req.body;
     const data = JSON.parse(await fs.readFile(filePath, "utf-8"));
-    newRecipe.id = (data.length + 1).toString();
-    data.push(newRecipe);
+    console.log("Data før ny oppskrift:", data); // Legg til denne for debugging
+
+    // Sjekk at data er en array
+    if (!Array.isArray(data.recipes)) {
+        data.recipes = []; // Sikre at det alltid er en array
+    }
+    newRecipe.id = (data.recipes.length + 1).toString(); // Fiks id-generering
+    data.recipes.push(newRecipe);
     await fs.writeFile(filePath, JSON.stringify(data, null, 2));
     res.status(201).json(newRecipe);
 });

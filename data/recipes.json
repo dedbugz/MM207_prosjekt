@@ -3,14 +3,35 @@
     {
       "id": "1",
       "name": "Pannekaker",
-      "ingredients": ["Egg", "Mel", "Melk"],
+      "ingredients": [
+        "Egg",
+        "Mel",
+        "Melk"
+      ],
       "instructions": "Bland alt sammen og stek i en panne."
     },
     {
       "id": "2",
       "name": "Pizza",
-      "ingredients": ["Mel", "Vann", "Gjær", "Tomatsaus", "Ost"],
+      "ingredients": [
+        "Mel",
+        "Vann",
+        "Gjær",
+        "Tomatsaus",
+        "Ost"
+      ],
       "instructions": "Lag deigen, ha på fyll, stek i ovnen."
+    },
+    {
+      "name": "Lasagne",
+      "ingredients": [
+        "Pasta",
+        "Kjøttdeig",
+        "Tomatsaus",
+        "Ost"
+      ],
+      "instructions": "Bygg lagvis og stek i ovnen.",
+      "id": "3"
     }
   ]
 }
