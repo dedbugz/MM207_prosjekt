@@ -16,19 +16,21 @@ recipeRouter.get('/', async (req, res) => {
 
 // Legg til en ny oppskrift
 recipeRouter.post("/", async (req, res) => {
-    const newRecipe = req.body;
-    const data = JSON.parse(await fs.readFile(filePath, "utf-8"));
-    console.log("Data før ny oppskrift:", data); // Legg til denne for debugging
+    const data = JSON.parse(await fs.readFile(filePath, "utf-8")); // Les inn data først
 
-    // Sjekk at data er en array
     if (!Array.isArray(data.recipes)) {
         data.recipes = []; // Sikre at det alltid er en array
     }
-    newRecipe.id = (data.recipes.length + 1).toString(); // Fiks id-generering
+
+    const id = (data.recipes.length + 1).toString(); // Nå kan vi trygt bruke data.recipes.length
+    const newRecipe = { id, ...req.body };
+
+    console.log("Data før ny oppskrift:", data);
     data.recipes.push(newRecipe);
     await fs.writeFile(filePath, JSON.stringify(data, null, 2));
     res.status(201).json(newRecipe);
 });
+
 
 // Oppdater en oppskrift
 recipeRouter.put("/:id", async (req, res) => {

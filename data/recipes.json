@@ -23,6 +23,7 @@
       "instructions": "Lag deigen, ha på fyll, stek i ovnen."
     },
     {
+      "id": "3",
       "name": "Lasagne",
       "ingredients": [
         "Pasta",
@@ -30,8 +31,7 @@
         "Tomatsaus",
         "Ost"
       ],
-      "instructions": "Bygg lagvis og stek i ovnen.",
-      "id": "3"
+      "instructions": "Bygg lagvis og stek i ovnen."
     }
   ]
 }
