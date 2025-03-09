@@ -829,3 +829,11 @@
 1741527963989|POST|/api/recipes
 1741528065596|POST|/api/recipes
 1741528077425|POST|/api/recipes
+1741528628563|PUT|/api/recipes/1
+1741528986183|PUT|/api/recipes/1
+1741529092974|PUT|/api/recipes/1
+1741529138261|GET|/api/recipes/
+1741529146969|PUT|/api/recipes/1
+1741529324258|PUT|/api/recipes/1
+1741529341989|PUT|/api/recipes/1
+1741529349264|PUT|/api/recipes/1

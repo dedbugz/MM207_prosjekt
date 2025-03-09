@@ -15,21 +15,20 @@ recipeRouter.get('/', async (req, res) => {
 });
 
 // Legg til en ny oppskrift
-recipeRouter.post("/", async (req, res) => {
-    const data = JSON.parse(await fs.readFile(filePath, "utf-8")); // Les inn data først
+recipeRouter.put("/:id", async (req, res) => {
+    const { id } = req.params;
+    const updatedRecipe = req.body;
+    let data = JSON.parse(await fs.readFile(filePath, "utf-8"));
+   
+    const index = data.recipes.findIndex(r => r.id == id);
+    if (index === -1) return res.status(404).json({ error: "Recipe not found" });
 
-    if (!Array.isArray(data.recipes)) {
-        data.recipes = []; // Sikre at det alltid er en array
-    }
+    data.recipes[index] = { ...data.recipes[index], ...updatedRecipe, id: data.recipes[index].id };
 
-    const id = (data.recipes.length + 1).toString(); // Nå kan vi trygt bruke data.recipes.length
-    const newRecipe = { id, ...req.body };
-
-    console.log("Data før ny oppskrift:", data);
-    data.recipes.push(newRecipe);
     await fs.writeFile(filePath, JSON.stringify(data, null, 2));
-    res.status(201).json(newRecipe);
+    res.json(data.recipes[index]);
 });
+
 
 
 // Oppdater en oppskrift
@@ -37,14 +36,16 @@ recipeRouter.put("/:id", async (req, res) => {
     const { id } = req.params;
     const updatedRecipe = req.body;
     let data = JSON.parse(await fs.readFile(filePath, "utf-8"));
-    
-    const index = data.findIndex(r => r.id === id);
+
+    const index = data.findIndex(r => r.id == id);
     if (index === -1) return res.status(404).json({ error: "Recipe not found" });
 
-    data[index] = { ...data[index], ...updatedRecipe };
+    data[index] = { ...data[index], ...updatedRecipe, id: data[index].id };
+
     await fs.writeFile(filePath, JSON.stringify(data, null, 2));
     res.json(data[index]);
 });
+
 
 // Slett en oppskrift
 recipeRouter.delete("/:id", async (req, res) => {

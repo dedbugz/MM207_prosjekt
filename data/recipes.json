@@ -2,13 +2,14 @@
   "recipes": [
     {
       "id": "1",
-      "name": "Pannekaker",
+      "name": "Super Pannekaker",
       "ingredients": [
         "Egg",
         "Mel",
-        "Melk"
+        "Melk",
+        "Vaniljesukker"
       ],
-      "instructions": "Bland alt sammen og stek i en panne."
+      "instructions": "Bland alt og stek i en panne."
     },
     {
       "id": "2",
