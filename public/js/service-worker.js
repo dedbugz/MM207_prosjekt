@@ -1,19 +1,49 @@
+const CACHE_NAME = "oppskriftsapp-cache-v2";
+const ASSETS_TO_CACHE = [
+    "/",
+    "/html/oppskriftsapp.html",
+    "/css/styles.css",
+    "/js/app.js"
+];
 
+// Installer service worker og legg filer i cache
 self.addEventListener("install", (event) => {
-    console.log("Service Worker installert");
+    console.log("Service worker installert!");
     event.waitUntil(
-        caches.open("oppskriftsapp-cache").then((cache) => {
-            return cache.addAll([
-                "/",
-                "/html/oppskriftsapp.html",
-                "/css/styles.css",
-                "/js/app.js"
-            ]);
+        caches.open(CACHE_NAME).then((cache) => {
+            console.log("Caching app shell...");
+            return cache.addAll(ASSETS_TO_CACHE);
         })
     );
+    self.skipWaiting();
 });
 
+// Aktiver service worker og fjern gammel cache
+self.addEventListener("activate", (event) => {
+    console.log("Service worker aktivert!");
+    event.waitUntil(
+        caches.keys().then((cacheNames) => {
+            return Promise.all(
+                cacheNames.map((cache) => {
+                    if (cache !== CACHE_NAME) {
+                        console.log("Sletter gammel cache:", cache);
+                        return caches.delete(cache);
+                    }
+                })
+            );
+        })
+    );
+    self.clients.claim();
+});
+
+// Håndter fetch-forespørsler
 self.addEventListener("fetch", (event) => {
+    if (event.request.url.includes("app.js")) {
+        // Sørger for at app.js alltid hentes ferskt
+        event.respondWith(fetch(event.request));
+        return;
+    }
+
     event.respondWith(
         caches.match(event.request).then((response) => {
             return response || fetch(event.request);
