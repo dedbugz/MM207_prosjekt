@@ -6,6 +6,7 @@ const filePath = "./data/recipes.json";
 
 // Hent alle oppskrifter
 recipeRouter.get('/', async (req, res) => {
+    console.log("Fetching recipes from DB")
     try {
         const data = await fs.readFile(filePath, 'utf-8');
         res.json(JSON.parse(data));
