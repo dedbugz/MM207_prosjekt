@@ -1,7 +1,7 @@
 import pkg from 'pg';
 const { Pool } = pkg;
 import dotenv from 'dotenv';
-import HTTP_CODES from '../utils/httpCodes.mjs';
+import HTTP_CODES from './httpCodes.mjs';
 
 dotenv.config();
 

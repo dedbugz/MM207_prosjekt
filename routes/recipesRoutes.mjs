@@ -1,5 +1,5 @@
 import express from "express";
-import pool from "../utils/db.js";
+import pool from "../utils/db.mjs";
 import HTTP_CODES from "../utils/httpCodes.mjs";
 
 const recipeRouter = express.Router();

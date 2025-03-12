@@ -1,6 +1,6 @@
 import express from 'express';
 import HTTP_CODES from './utils/httpCodes.mjs';
-import pool from './utils/db.js';
+import pool from './utils/db.mjs';
 import log from './modules/log.mjs';
 import { LOGG_LEVELS } from './modules/log.mjs';
 import dotenv from "dotenv";
