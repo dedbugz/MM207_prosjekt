@@ -1554,3 +1554,9 @@
 1741803019404|GET|/imgs/pwa/icon-192x192.png
 1741803020950|GET|/service-worker.js
 1741803021717|GET|/api/recipes
+1741803616638|GET|/js/app.js
+1741803616643|GET|/manifest.json
+1741803616674|GET|/imgs/pwa/icon-192x192.png
+1741803616676|GET|/favicon.ico
+1741803618172|GET|/api/recipes
+1741803618208|GET|/service-worker.js
