@@ -1549,3 +1549,8 @@
 1741801691112|GET|/service-worker.js
 1741801715360|POST|/api/recipes
 1741801726860|GET|/api/recipes
+1741803019375|GET|/js/app.js
+1741803019378|GET|/manifest.json
+1741803019404|GET|/imgs/pwa/icon-192x192.png
+1741803020950|GET|/service-worker.js
+1741803021717|GET|/api/recipes
