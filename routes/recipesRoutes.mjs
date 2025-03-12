@@ -36,37 +36,43 @@ recipeRouter.post("/", async (req, res) => {
 
 // Oppdater en oppskrift
 recipeRouter.put("/:id", async (req, res) => {
-    const { id } = req.params;
-    const updatedRecipe = req.body;
-    let data = JSON.parse(await fs.readFile(filePath, "utf-8"));
+    try {
+        const { id } = req.params;
+        const { name, ingredients, instructions } = req.body;
 
-    const index = data.findIndex(r => r.id == id);
-    if (index === -1) return res.status(404).json({ error: "Recipe not found" });
+        const result = await pool.query(
+            "UPDATE recipes SET name = $1, ingredients = $2, instructions = $3 WHERE id = $4 RETURNING *",
+            [name, ingredients, instructions, id]
+        );
 
-    data[index] = { ...data[index], ...updatedRecipe, id: data[index].id };
+        if (result.rows.length === 0) {
+            return res.status(404).json({ error: "Recipe not found" });
+        }
 
-    await fs.writeFile(filePath, JSON.stringify(data, null, 2));
-    res.json(data[index]);
+        res.json(result.rows[0]);
+    } catch (error) {
+        console.error("Feil ved oppdatering av oppskrift:", error);
+        res.status(400).json({ error: "Kunne ikke oppdatere oppskrift" });
+    }
 });
 
 
 // Slett en oppskrift
 recipeRouter.delete("/:id", async (req, res) => {
-    const { id } = req.params;
-    let data = JSON.parse(await fs.readFile(filePath, "utf-8"));
+    try {
+        const { id } = req.params;
 
-    if (!Array.isArray(data.recipes)) {
-        return res.status(500).json({ error: "Invalid data format" });
+        const result = await pool.query("DELETE FROM recipes WHERE id = $1 RETURNING *", [id]);
+
+        if (result.rows.length === 0) {
+            return res.status(404).json({ error: "Recipe not found" });
+        }
+
+        res.status(204).end();
+    } catch (error) {
+        console.error("Feil ved sletting av oppskrift:", error);
+        res.status(400).json({ error: "Kunne ikke slette oppskrift" });
     }
-
-    const initialLength = data.recipes.length;
-    data.recipes = data.recipes.filter(r => r.id !== id.toString());
-    if (data.recipes.length === initialLength) {
-        return res.status(404).json({ error: "Recipe not found" });
-    }
-
-    await fs.writeFile(filePath, JSON.stringify({ recipes: data.recipes }, null, 2));
-    res.status(204).end();
 });
 
 
