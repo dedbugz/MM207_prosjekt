@@ -15,12 +15,12 @@
 
     <h2>Legg til en ny oppskrift</h2>
     <form id="recipeForm">
-        <input type="text" id="name" placeholder="Navn på oppskrift" required />
-        <input type="text" id="ingredients" placeholder="Ingredienser (kommaseparert)" required />
-        <textarea id="instructions" placeholder="Instruksjoner" required></textarea>
+        <input type="text" id="recipeName" placeholder="Oppskriftsnavn" required />
+        <input type="text" id="recipeIngredients" placeholder="Ingredienser (kommaseparert)" required />
+        <textarea id="recipeInstructions" placeholder="Instruksjoner" required></textarea>
         <button type="submit">Legg til oppskrift</button>
     </form>
-    
+
     <script>
         if ("serviceWorker" in navigator) {
             navigator.serviceWorker.register("/service-worker.js")
