@@ -16,7 +16,8 @@ document.addEventListener("DOMContentLoaded", () => {
             const response = await fetch("/api/recipes");
     
             const data = await response.json();
-    
+            console.log(data);
+            
             recipeList.innerHTML = "";
             data.recipes.forEach(recipe => {
                 const li = document.createElement("li");

@@ -7,6 +7,7 @@ CREATE TABLE IF NOT EXISTS recipes (
     created_at TIMESTAMP DEFAULT NOW()
 );
 
+
 -- Sett inn noen eksempeldata (kan fjernes senere)
 INSERT INTO recipes (name, ingredients, instructions) VALUES
 ('Super Pannekaker', ARRAY['Egg', 'Mel', 'Melk', 'Vaniljesukker'], 'Bland alt og stek i en panne.'),

@@ -45,6 +45,18 @@
         "Melk"
       ],
       "instructions": "Bland alle ingrediensene og stek i ovnen på 180°C i 30 minutter."
+    },
+    {
+      "id": "5",
+      "name": "Eplekake",
+      "ingredients": [
+        "Epler",
+        "Mel",
+        "Sukker",
+        "Smør",
+        "Kanel"
+      ],
+      "instructions": "Bland ingrediensene, ha i en form, stek i ovnen på 180°C i 40 min."
     }
   ]
 }

@@ -1,34 +1,35 @@
 import express from "express";
-import fs from "fs/promises";
+import pool from "../utils/db.js";
+import HTTP_CODES from "../utils/httpCodes.mjs";
 
 const recipeRouter = express.Router();
-const filePath = "./data/recipes.json";
+//const filePath = "./data/recipes.json";
 
 // Hent alle oppskrifter
-recipeRouter.get('/', async (req, res) => {
-    console.log("Fetching recipes from DB")
+recipeRouter.get("/", async (req, res) => {
     try {
-        const data = await fs.readFile(filePath, 'utf-8');
-        res.json(JSON.parse(data));
+        const result = await pool.query("SELECT * FROM recipes");
+        res.status(200).json({ recipes: result.rows });
     } catch (error) {
-        res.status(500).json({ error: 'Kunne ikke hente oppskrifter' });
+        console.error("Feil ved henting av oppskrifter:", error);
+        res.status(400).json({ error: "Kunne ikke hente oppskrifter" });
     }
+    console.log(result.rows);
 });
 
 // Legg til en ny oppskrift
 recipeRouter.post("/", async (req, res) => {
-    const data = JSON.parse(await fs.readFile(filePath, "utf-8"));
-
-    if (!Array.isArray(data.recipes)) {
-        data.recipes = [];
+    try {
+        const { name, ingredients, instructions } = req.body;
+        const result = await pool.query(
+            "INSERT INTO recipes (name, ingredients, instructions) VALUES ($1, $2, $3) RETURNING *",
+            [name, ingredients, instructions]
+        );
+        res.status(201).json(result.rows[0]);
+    } catch (error) {
+        console.error("Feil ved lagring av oppskrift:", error);
+        res.status(400).json({ error: "Kunne ikke lagre oppskrift" });
     }
-
-    const id = (data.recipes.length + 1).toString();
-    const newRecipe = { id, ...req.body };
-
-    data.recipes.push(newRecipe);
-    await fs.writeFile(filePath, JSON.stringify(data, null, 2));
-    res.status(201).json(newRecipe);
 });
 
 
