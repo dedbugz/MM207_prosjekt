@@ -9,12 +9,12 @@ const recipeRouter = express.Router();
 recipeRouter.get("/", async (req, res) => {
     try {
         const result = await pool.query("SELECT * FROM recipes");
+        console.log(result.rows); // Flyttet loggen hit
         res.status(200).json({ recipes: result.rows });
     } catch (error) {
         console.error("Feil ved henting av oppskrifter:", error);
         res.status(400).json({ error: "Kunne ikke hente oppskrifter" });
     }
-    console.log(result.rows);
 });
 
 // Legg til en ny oppskrift
