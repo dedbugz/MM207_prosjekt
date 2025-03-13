@@ -53,7 +53,7 @@ document.addEventListener("DOMContentLoaded", () => {
 // Funksjon for å vise oppskrifter
 function displayRecipes(recipes) {
     const recipeList = document.getElementById("recipe-list");
-    recipeList.innerHTML = ""; // Tøm eksisterende liste
+    recipeList.innerHTML = "";
 
     if (recipes.length === 0) {
         recipeList.innerHTML = "<li>Ingen oppskrifter funnet.</li>";
@@ -94,7 +94,7 @@ function displayRecipes(recipes) {
             document.getElementById("editRecipeIngredients").value = ingredients;
             document.getElementById("editRecipeInstructions").value = instructions;
 
-            // Vis skjemaet
+            // Viser skjemaet
             document.getElementById("editRecipeForm").style.display = "block";
         });
     });
@@ -139,7 +139,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const recipeForm = document.getElementById("recipeForm");
 
     recipeForm.addEventListener("submit", async (event) => {
-        event.preventDefault(); // Forhindrer siden fra å laste inn på nytt
+        event.preventDefault();
 
         // Hent verdier fra inputfeltene
         const name = document.getElementById("recipeName").value;
@@ -167,7 +167,7 @@ document.addEventListener("DOMContentLoaded", () => {
             }
 
             console.log("Oppskrift lagt til!");
-            recipeForm.reset(); // Tøm skjemaet etter suksess
+            recipeForm.reset();
         } catch (error) {
             console.error("Feil ved lagring av oppskrift:", error);
         }
@@ -221,7 +221,7 @@ document.addEventListener("DOMContentLoaded", () => {
             const instructions = document.getElementById("editRecipeInstructions").value;
 
             if (!recipeId) {
-                alert("❌ Feil: Ingen oppskrift valgt for oppdatering!");
+                alert("Feil: Ingen oppskrift valgt for oppdatering!");
                 return;
             }
 
@@ -244,11 +244,11 @@ document.addEventListener("DOMContentLoaded", () => {
                 alert("Oppskrift lagret!");
                 document.getElementById("editRecipeForm").style.display = "none"; // Skjul skjema etter oppdatering
             } catch (error) {
-                console.error("❌ Feil ved oppdatering av oppskrift:", error);
+                console.error("Feil ved oppdatering av oppskrift:", error);
                 alert("Feil: Kunne ikke lagre endringer.");
             }
         });
     } else {
-        console.error("❌ Feil: Kunne ikke finne 'saveChanges'-knappen.");
+        console.error("Feil: Kunne ikke finne 'saveChanges'-knappen.");
     }
 });

@@ -7,9 +7,8 @@ import dotenv from "dotenv";
 
 // Importer routes for session og oppstartsfunksjoner
 import sessionRoutes from './routes/sessionRoutes.mjs';
-
-
 import recipeRouter from './routes/recipesRoutes.mjs';
+
 
 const ENABLE_LOGGING = false;
 const server = express();
