@@ -5,6 +5,32 @@ if ("serviceWorker" in navigator) {
     .catch((err) => {console.log("Service Worker-feil:", err);});
 }
 
+let deferredPrompt;
+
+window.addEventListener("beforeinstallprompt", (event) => {
+    event.preventDefault();
+    deferredPrompt = event;
+    console.log("Install prompt available");
+
+    // Vis en installasjonsknapp
+    const installButton = document.createElement("button");
+    installButton.textContent = "Installer appen";
+    installButton.style.display = "block";
+    document.body.appendChild(installButton);
+
+    installButton.addEventListener("click", () => {
+        deferredPrompt.prompt();
+        deferredPrompt.userChoice.then((choiceResult) => {
+            if (choiceResult.outcome === "accepted") {
+                console.log("Bruker installerte appen!");
+            } else {
+                console.log("Bruker avviste installasjonen.");
+            }
+            deferredPrompt = null;
+        });
+    });
+});
+
 // Hente oppskrifter og vise dem i UI
 document.addEventListener("DOMContentLoaded", () => {
     const recipeList = document.getElementById("recipe-list");
