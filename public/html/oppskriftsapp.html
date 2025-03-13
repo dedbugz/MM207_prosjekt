@@ -21,6 +21,10 @@
         <button type="submit">Legg til oppskrift</button>
     </form>
 
+    <input type="text" id="searchIngredient" placeholder="Søk etter ingredienser">
+    <button onclick="searchRecipes()">Søk</button>
+
+
     <script>
         if ("serviceWorker" in navigator) {
             navigator.serviceWorker.register("/service-worker.js")
