@@ -133,6 +133,11 @@ function displayRecipes(recipes) {
 
 // Legg til oppskrift
 document.addEventListener("DOMContentLoaded", () => {
+    const toggleButton = document.getElementById("toggleRecipeForm");
+    const formContainer = document.getElementById("recipeFormContainer");
+    toggleButton.addEventListener("click", () => {
+        formContainer.style.display = formContainer.style.display === "none" ? "block" : "none";
+    });
     const recipeForm = document.getElementById("recipeForm");
 
     recipeForm.addEventListener("submit", async (event) => {

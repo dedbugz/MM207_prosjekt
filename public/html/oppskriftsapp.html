@@ -15,14 +15,20 @@
     <button id="fetchRecipes">📜 Hent Oppskrifter</button>
     <ul id="recipe-list"></ul>
 
-    <h2>Legg til en ny oppskrift</h2>
-    <form id="recipeForm">
-        <input type="text" id="recipeName" placeholder="Oppskriftsnavn" required />
-        <input type="text" id="recipeIngredients" placeholder="Ingredienser (kommaseparert)" required />
-        <textarea id="recipeInstructions" placeholder="Instruksjoner" required></textarea>
-        <button type="submit">Legg til oppskrift</button>
-    </form>
+    <button id="toggleRecipeForm">➕ Legg til oppskrift</button>
 
+    <div id="recipeFormContainer" style="display: none;">
+        <h2>Legg til en ny oppskrift</h2>
+        <form id="recipeForm">
+            <input type="text" id="recipeName" placeholder="Oppskriftsnavn" required />
+            <input type="text" id="recipeIngredients" placeholder="Ingredienser (kommaseparert)" required />
+            <textarea id="recipeInstructions" placeholder="Instruksjoner" required></textarea>
+            <button type="submit">Legg til oppskrift</button>
+        </form>
+    </div>
+
+    <div></div>
+    
     <input type="text" id="searchIngredient" placeholder="Søk etter ingredienser">
     <button onclick="searchRecipes()">Søk</button>
 
