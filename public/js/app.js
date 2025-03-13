@@ -61,23 +61,20 @@ function displayRecipes(recipes) {
     }
 
     recipes.forEach(recipe => {
-        const li = document.createElement("li");
+        const div = document.createElement("div");
+        div.classList.add("recipe-card");
 
         const ingredientsList = recipe.ingredients ? recipe.ingredients.join(", ") : "Ingen ingredienser oppgitt";
 
-        li.innerHTML = `
-            <strong>${recipe.name}</strong><br>
-            <em>Ingredienser:</em> ${ingredientsList}<br>
-            <em>Instruksjoner:</em> ${recipe.instructions}<br>
-            <button class="editRecipeButton" data-id="${recipe.id}" data-name="${recipe.name}"
-                data-ingredients="${recipe.ingredients}" data-instructions="${recipe.instructions}">
-                ✏ Rediger
-            </button>
-            <button class="deleteRecipeButton" data-id="${recipe.id}">🗑 Slett</button>
-            <br><br>
+        div.innerHTML = `
+            <h3>${recipe.name}</h3>
+            <p><em>Ingredienser:</em> ${ingredientsList}</p>
+            <p><em>Instruksjoner:</em> ${recipe.instructions}</p>
+            <button class="edit-btn">✏️ Rediger</button>
+            <button class="delete-btn">🗑 Slett</button>
         `;
 
-        recipeList.appendChild(li);
+        recipeList.appendChild(div);
     });
 
     // Legg til event listeners for alle "Rediger"-knapper

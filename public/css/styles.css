@@ -5,6 +5,25 @@ body {
     margin: 50px;
   }
 
-.deck-id {
-    font-size: medium;
+  #recipe-list {
+    list-style-type: none;
+    padding: 0;
+}
+
+.recipe-card {
+  background: white;
+  padding: 15px;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  margin: 15px auto;
+  width: 60%;
+  text-align: left;
+}
+
+input, textarea {
+  padding: 8px;
+  margin: 5px;
+  width: 200px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
 }
