@@ -37,25 +37,45 @@ document.addEventListener("DOMContentLoaded", () => {
     const fetchButton = document.getElementById("fetchRecipes");
 
     fetchButton.addEventListener("click", async () => {
-    
         try {
             const response = await fetch("/api/recipes");
-    
             const data = await response.json();
-            console.log(data);
-            
-            recipeList.innerHTML = "";
-            data.recipes.forEach(recipe => {
-                const li = document.createElement("li");
-                li.textContent = `${recipe.name}: ${recipe.instructions}`;
-                recipeList.appendChild(li);
-            });
-    
+            console.log("🔍 API-respons:", data);
+
+            displayRecipes(data.recipes);
+
         } catch (error) {
-            console.error(" Kunne ikke hente oppskrifter:", error);
+            console.error("❌ Kunne ikke hente oppskrifter:", error);
         }
     });
 });
+
+// Funksjon for å vise oppskrifter
+function displayRecipes(recipes) {
+    const recipeList = document.getElementById("recipe-list");
+    recipeList.innerHTML = ""; // Tøm eksisterende liste
+
+    if (recipes.length === 0) {
+        recipeList.innerHTML = "<li>Ingen oppskrifter funnet.</li>";
+        return;
+    }
+
+    recipes.forEach(recipe => {
+        const li = document.createElement("li");
+
+        // 🎯 Formater ingrediensene riktig
+        const ingredientsList = recipe.ingredients ? recipe.ingredients.join(", ") : "Ingen ingredienser oppgitt";
+
+        li.innerHTML = `
+            <strong>${recipe.name}</strong><br>
+            <em>Ingredienser:</em> ${ingredientsList}<br>
+            <em>Instruksjoner:</em> ${recipe.instructions}<br><br>
+        `;
+
+        recipeList.appendChild(li);
+    });
+}
+
 // Legg til oppskrift
 document.addEventListener("DOMContentLoaded", () => {
     const recipeForm = document.getElementById("recipeForm");
