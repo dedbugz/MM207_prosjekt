@@ -115,28 +115,32 @@ async function loadRecipeForEditing(event) {
     const recipeId = event.target.getAttribute("data-id");
 
     if (!recipeId) {
-        console.error("Feil: Kunne ikke hente ID for redigering.");
+        console.error("❌ Feil: Kunne ikke hente ID for redigering.");
         return;
     }
 
     try {
         const response = await fetch(`/api/recipes/${recipeId}`);
+        if (!response.ok) throw new Error("Kunne ikke hente oppskrift.");
+
         const recipe = await response.json();
 
-        if (!response.ok) {
-            throw new Error("Kunne ikke hente oppskrift.");
-        }
+        console.log(`✏️ Redigerer oppskrift med ID: ${recipeId}`);
 
-        console.log(`Redigerer oppskrift med ID: ${recipeId}`);
-
+        // Fyll skjemaet med oppskriftsdata
         document.getElementById("editRecipeId").value = recipeId;
         document.getElementById("editRecipeName").value = recipe.name;
         document.getElementById("editRecipeIngredients").value = recipe.ingredients.join(", ");
         document.getElementById("editRecipeInstructions").value = recipe.instructions;
 
+        // Vis redigeringsskjemaet
         document.getElementById("editRecipeForm").style.display = "block";
+
+        // 🔄 Oppdater listen etter redigering
+        fetchRecipes();
+        
     } catch (error) {
-        console.error("Feil ved lasting av oppskrift for redigering:", error);
+        console.error("❌ Feil ved lasting av oppskrift for redigering:", error);
     }
 }
 
@@ -270,6 +274,9 @@ document.addEventListener("DOMContentLoaded", () => {
                 console.log("✅ Oppskrift oppdatert!");
                 alert("Oppskrift lagret!");
                 document.getElementById("editRecipeForm").style.display = "none"; // Skjul skjema etter oppdatering
+                document.getElementById("fetchRecipes").click(); // Hent oppdatert liste
+
+
             } catch (error) {
                 console.error("Feil ved oppdatering av oppskrift:", error);
                 alert("Feil: Kunne ikke lagre endringer.");
@@ -279,3 +286,4 @@ document.addEventListener("DOMContentLoaded", () => {
         console.error("Feil: Kunne ikke finne 'saveChanges'-knappen.");
     }
 });
+

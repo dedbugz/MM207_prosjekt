@@ -7,7 +7,7 @@ const recipeRouter = express.Router();
 // Hent alle oppskrifter
 recipeRouter.get("/", async (req, res) => {
     try {
-        const result = await pool.query("SELECT * FROM recipes");
+        const result = await pool.query("SELECT * FROM recipes ORDER BY id ASC");
         console.log(result.rows);
         res.status(200).json({ recipes: result.rows });
     } catch (error) {
