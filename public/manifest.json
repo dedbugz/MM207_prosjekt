@@ -18,5 +18,19 @@
       "sizes": "512x512",
       "type": "image/png"
     }
+  ],
+  "screenshots": [
+    {
+      "src": "/imgs/pwa/screenshot.png",
+      "sizes": "800x600",
+      "type": "image/png",
+      "form_factor": "wide"
+    },
+    {
+      "src": "/imgs/pwa/screenshot_mobile.png",
+      "sizes": "600x600",
+      "type": "image/png",
+      "form_factor": "narrow"
+    }
   ]
 }
