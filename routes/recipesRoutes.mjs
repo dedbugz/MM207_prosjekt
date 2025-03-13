@@ -82,8 +82,8 @@ recipeRouter.get("/search", async (req, res) => {
             return res.status(400).json({ error: "Mangler ingrediens for søk" });
         }
 
-        const query = "SELECT * FROM recipes WHERE ingredients ILIKE $1";
-        const result = await pool.query(query, [`%${ingredient}%`]);
+        const query = "SELECT * FROM recipes WHERE $1 = ANY(ingredients)";
+        const result = await pool.query(query, [ingredient]);
 
         res.status(200).json({ recipes: result.rows });
     } catch (error) {
