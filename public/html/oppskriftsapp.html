@@ -26,6 +26,16 @@
     <input type="text" id="searchIngredient" placeholder="Søk etter ingredienser">
     <button onclick="searchRecipes()">Søk</button>
 
+    <!--skjema for å redigere oppskrifter gjennom frontend-->
+    <div id="editRecipeForm" style="display: none;">
+        <h3>Rediger Oppskrift</h3>
+        <input type="hidden" id="editRecipeId">
+        <input type="text" id="editRecipeName" placeholder="Oppskriftens navn">
+        <input type="text" id="editRecipeIngredients" placeholder="Ingredienser (kommaseparert)">
+        <textarea id="editRecipeInstructions" placeholder="Instruksjoner"></textarea>
+        <button id="saveChanges">Lagre endringer</button>
+        <button id="deleteRecipe">Slett oppskrift</button>
+    </div>
 
     <script>
         if ("serviceWorker" in navigator) {
