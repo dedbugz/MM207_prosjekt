@@ -199,6 +199,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
             console.log("Oppskrift lagt til!");
             recipeForm.reset();
+            document.getElementById("fetchRecipes").click(); 
         } catch (error) {
             console.error("Feil ved lagring av oppskrift:", error);
         }
