@@ -63,7 +63,6 @@ function displayRecipes(recipes) {
     recipes.forEach(recipe => {
         const li = document.createElement("li");
 
-        // 🎯 Formater ingrediensene riktig
         const ingredientsList = recipe.ingredients ? recipe.ingredients.join(", ") : "Ingen ingredienser oppgitt";
 
         li.innerHTML = `
@@ -134,4 +133,20 @@ async function searchRecipes() {
         console.error("Feil ved henting av oppskrifter:", error);
     }
 }
-document.getElementById("searchButton").addEventListener("click", searchRecipes);
+
+
+
+//test av frontend redigering
+document.addEventListener("DOMContentLoaded", () => {
+    const editButton = document.getElementById("fetchEditForm");
+    const editForm = document.getElementById("editRecipeForm");
+
+    if (editButton && editForm) { 
+        editButton.addEventListener("click", () => {
+            console.log("Rediger oppskrift-knapp klikket!");
+            editForm.style.display = editForm.style.display === "none" ? "block" : "none";
+        });
+    } else {
+        console.error("Feil: Kunne ikke finne 'fetchEditForm' eller 'editRecipeForm'.");
+    }
+});
