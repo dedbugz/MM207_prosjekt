@@ -40,12 +40,12 @@ document.addEventListener("DOMContentLoaded", () => {
         try {
             const response = await fetch("/api/recipes");
             const data = await response.json();
-            console.log("🔍 API-respons:", data);
+            console.log("API-respons:", data);
 
             displayRecipes(data.recipes);
 
         } catch (error) {
-            console.error("❌ Kunne ikke hente oppskrifter:", error);
+            console.error("Kunne ikke hente oppskrifter:", error);
         }
     });
 });
@@ -115,3 +115,23 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 });
+
+// Søkefunksjon for ingredienser
+async function searchRecipes() {
+    const ingredient = document.getElementById("searchIngredient").value.trim();
+    if (!ingredient) {
+        alert("Skriv inn en ingrediens for å søke.");
+        return;
+    }
+
+    try {
+        const response = await fetch(`/api/recipes/search?ingredient=${ingredient}`);
+        const data = await response.json();
+
+        console.log("API-respons for søk:", data);
+        displayRecipes(data.recipes);
+    } catch (error) {
+        console.error("Feil ved henting av oppskrifter:", error);
+    }
+}
+document.getElementById("searchButton").addEventListener("click", searchRecipes);
