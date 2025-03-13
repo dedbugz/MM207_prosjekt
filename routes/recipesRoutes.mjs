@@ -3,13 +3,12 @@ import pool from "../utils/db.mjs";
 import HTTP_CODES from "../utils/httpCodes.mjs";
 
 const recipeRouter = express.Router();
-//const filePath = "./data/recipes.json";
 
 // Hent alle oppskrifter
 recipeRouter.get("/", async (req, res) => {
     try {
         const result = await pool.query("SELECT * FROM recipes");
-        console.log(result.rows); // Flyttet loggen hit
+        console.log(result.rows);
         res.status(200).json({ recipes: result.rows });
     } catch (error) {
         console.error("Feil ved henting av oppskrifter:", error);
@@ -75,7 +74,23 @@ recipeRouter.delete("/:id", async (req, res) => {
     }
 });
 
+// Søk etter oppskrifter basert på ingrediens
+recipeRouter.get("/search", async (req, res) => {
+    try {
+        const { ingredient } = req.query;
+        if (!ingredient) {
+            return res.status(400).json({ error: "Mangler ingrediens for søk" });
+        }
 
+        const query = "SELECT * FROM recipes WHERE ingredients ILIKE $1";
+        const result = await pool.query(query, [`%${ingredient}%`]);
+
+        res.status(200).json({ recipes: result.rows });
+    } catch (error) {
+        console.error("Feil ved søk etter oppskrifter:", error);
+        res.status(500).json({ error: "Noe gikk galt ved søk" });
+    }
+});
 
 
 export default recipeRouter;
