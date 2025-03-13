@@ -67,68 +67,93 @@ function displayRecipes(recipes) {
         const ingredientsList = recipe.ingredients ? recipe.ingredients.join(", ") : "Ingen ingredienser oppgitt";
 
         div.innerHTML = `
-            <h3>${recipe.name}</h3>
+        <h3>${recipe.name}</h3>
             <p><em>Ingredienser:</em> ${ingredientsList}</p>
             <p><em>Instruksjoner:</em> ${recipe.instructions}</p>
-            <button class="edit-btn">✏️ Rediger</button>
-            <button class="delete-btn">🗑 Slett</button>
+            <button class="edit-btn" data-id="${recipe.id}">✏ Rediger</button>
+            <button class="delete-btn" data-id="${recipe.id}">🗑 Slett</button>
         `;
 
         recipeList.appendChild(div);
     });
 
-    // Legg til event listeners for alle "Rediger"-knapper
-    document.querySelectorAll(".editRecipeButton").forEach(button => {
+    //event listeners for Redigering
+    document.querySelectorAll(".edit-btn").forEach(button => {
         button.addEventListener("click", (event) => {
             const recipeId = event.target.getAttribute("data-id");
-            const name = event.target.getAttribute("data-name");
-            const ingredients = event.target.getAttribute("data-ingredients");
-            const instructions = event.target.getAttribute("data-instructions");
-
-            // Sett verdiene i redigeringsskjemaet
-            document.getElementById("editRecipeId").value = recipeId;
-            document.getElementById("editRecipeName").value = name;
-            document.getElementById("editRecipeIngredients").value = ingredients;
-            document.getElementById("editRecipeInstructions").value = instructions;
-
-            // Viser skjemaet
-            document.getElementById("editRecipeForm").style.display = "block";
+            openEditForm(recipeId);
         });
     });
 
-    // Legg til event listeners for "Slett"-knapper
-    document.querySelectorAll(".deleteRecipeButton").forEach(button => {
+    //event listeners for Redigering
+    document.querySelectorAll(".delete-btn").forEach(button => {
         button.addEventListener("click", async (event) => {
-            const recipeId = event.target.getAttribute("data-id");
-            if (!recipeId) {
-                alert("Feil: Ingen oppskrift valgt for sletting!");
-                return;
-            }
-
-            if (!confirm("Er du sikker på at du vil slette denne oppskriften?")) {
-                return;
-            }
-
-            try {
-                const response = await fetch(`/api/recipes/${recipeId}`, {
-                    method: "DELETE"
-                });
-
-                if (!response.ok) {
-                    throw new Error("Kunne ikke slette oppskrift");
-                }
-
-                console.log("Oppskrift slettet!");
-                alert("Oppskrift slettet!");
-
-                // Oppdater listen med oppskrifter
-                document.getElementById("fetchRecipes").click();
-            } catch (error) {
-                console.error("Feil ved sletting av oppskrift:", error);
-                alert("Feil: Kunne ikke slette oppskrift.");
+            const recipeId = event.target.dataset.id;
+            if (confirm("Er du sikker på at du vil slette oppskriften?")) {
+                await deleteRecipe(recipeId);
             }
         });
     });
+}
+
+// Funksjon for å åpne redigeringsskjemaet
+function openEditForm(recipeId) {
+    console.log(`Redigerer oppskrift med ID: ${recipeId}`);
+
+    if (!recipeId) {
+        console.error("Feil: Recipe ID er undefined!");
+        return;
+    }
+
+    const editForm = document.getElementById("editRecipeForm");
+    document.getElementById("editRecipeId").value = recipeId;
+    editForm.style.display = "block";
+}
+
+//Funksjon for redigering
+async function loadRecipeForEditing(event) {
+    const recipeId = event.target.getAttribute("data-id");
+
+    if (!recipeId) {
+        console.error("Feil: Kunne ikke hente ID for redigering.");
+        return;
+    }
+
+    try {
+        const response = await fetch(`/api/recipes/${recipeId}`);
+        const recipe = await response.json();
+
+        if (!response.ok) {
+            throw new Error("Kunne ikke hente oppskrift.");
+        }
+
+        console.log(`Redigerer oppskrift med ID: ${recipeId}`);
+
+        document.getElementById("editRecipeId").value = recipeId;
+        document.getElementById("editRecipeName").value = recipe.name;
+        document.getElementById("editRecipeIngredients").value = recipe.ingredients.join(", ");
+        document.getElementById("editRecipeInstructions").value = recipe.instructions;
+
+        document.getElementById("editRecipeForm").style.display = "block";
+    } catch (error) {
+        console.error("Feil ved lasting av oppskrift for redigering:", error);
+    }
+}
+
+
+//Funksjon for å slette en oppskrift
+async function deleteRecipe(recipeId) {
+    try {
+        const response = await fetch(`/api/recipes/${recipeId}`, { method: "DELETE" });
+        if (!response.ok) throw new Error("Kunne ikke slette oppskriften.");
+
+        console.log("Oppskrift slettet!");
+        alert("Oppskrift slettet!");
+        document.getElementById("fetchRecipes").click(); // Hent oppdatert liste
+    } catch (error) {
+        console.error("Feil ved sletting av oppskrift:", error);
+        alert("Feil ved sletting av oppskrift.");
+    }
 }
 
 // Legg til oppskrift
