@@ -4,6 +4,7 @@
   "short_name": "Oppskrifter",
   "description": "En PWA for oppskrifter",
   "start_url": "/",
+  "id": "/",
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#4CAF50",
