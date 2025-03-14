@@ -136,7 +136,6 @@ async function loadRecipeForEditing(event) {
         // Vis redigeringsskjemaet
         document.getElementById("editRecipeForm").style.display = "block";
 
-        // 🔄 Oppdater listen etter redigering
         fetchRecipes();
         
     } catch (error) {
@@ -153,7 +152,7 @@ async function deleteRecipe(recipeId) {
 
         console.log("Oppskrift slettet!");
         alert("Oppskrift slettet!");
-        document.getElementById("fetchRecipes").click(); // Hent oppdatert liste
+        document.getElementById("fetchRecipes").click();
     } catch (error) {
         console.error("Feil ved sletting av oppskrift:", error);
         alert("Feil ved sletting av oppskrift.");
@@ -172,12 +171,10 @@ document.addEventListener("DOMContentLoaded", () => {
     recipeForm.addEventListener("submit", async (event) => {
         event.preventDefault();
 
-        // Hent verdier fra inputfeltene
         const name = document.getElementById("recipeName").value;
         const ingredients = document.getElementById("recipeIngredients").value.split(",").map(i => i.trim());
         const instructions = document.getElementById("recipeInstructions").value;
 
-        // Lag JSON-objekt for forespørselen
         const newRecipe = {
             name,
             ingredients,
@@ -226,7 +223,6 @@ async function searchRecipes() {
 }
 
 
-//test av frontend redigering
 document.addEventListener("DOMContentLoaded", () => {
     const editButton = document.getElementById("fetchEditForm");
     const editForm = document.getElementById("editRecipeForm");
@@ -274,8 +270,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 console.log("✅ Oppskrift oppdatert!");
                 alert("Oppskrift lagret!");
-                document.getElementById("editRecipeForm").style.display = "none"; // Skjul skjema etter oppdatering
-                document.getElementById("fetchRecipes").click(); // Hent oppdatert liste
+                document.getElementById("editRecipeForm").style.display = "none";
+                document.getElementById("fetchRecipes").click();
 
 
             } catch (error) {
