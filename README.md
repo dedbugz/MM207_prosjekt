@@ -8,6 +8,10 @@ API-et støtter CRUD-operasjoner (Create, Read, Update, Delete)
 🔗https://mm207-prosjekt.onrender.com
 
 
+## ⚠️ Begrensninger i Firefox
+Firefox støtter **ikke** PWA-installasjon på desktop. Dette betyr at installasjonsknappen **ikke vil vises** hvis du bruker Firefox.  
+For å teste installasjonsfunksjonen, bruk en nettleser som **Google Chrome** eller **Microsoft Edge**, som støtter PWA.
+
 
 ## 🌐 **PWA-funksjonalitet**
 - Appen er en **Progressive Web App (PWA)** og kan installeres på enheter.
